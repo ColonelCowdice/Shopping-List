@@ -1,0 +1,219 @@
+# Imports
+#none
+
+# Lists
+Grocerylist = []
+Weightlist = []
+Pricelist = []
+
+#Variables
+global Money
+Food = True
+Price = True
+Cost = True
+takeout = True
+AskBudget = True
+AskBudget2 = True
+
+
+# Functions
+
+##Budget
+def PocketChange():
+    global AskBudget
+    global AskBudget2
+    global Budget
+    while AskBudget == True:
+        # Check if Budget is a number
+        try:
+            Budget = float(input("What is your budget? : "))
+            Money = Budget
+            # If Budget is a 1 dollar then use "dollar" instead of "dollars"
+            while AskBudget2 == True:
+                if Budget == "1":
+                    print("\nYour budget is " + str(Budget) + " dollar \n")
+                    # Ask if user would like to restate their budget
+                    RedoBudget = input("Is this the right Budget?\n \nY/N : ")
+                    if RedoBudget == "Yes" or RedoBudget == "Y" or RedoBudget == "yes":
+                        print("\nOkay lets continue")
+                        AskBudget = False
+                        AskBudget2 = False
+                    elif RedoBudget == "No" or RedoBudget == "N" or RedoBudget == "no":
+                        print("\nPlease restate Your budget\n")
+                        Budget = float(input("What is your budget? : "))
+                    else:
+                        print("\nPlease state yes or no")
+                # If Budget is < 1 dollar use "dollars"
+                else:
+                    print("\nYour budget is " + str(Budget) + " dollars \n")
+                    # Ask if user would like to restate their budget
+                    RedoBudget = input("Is this the right Budget?\n \nY/N : ")
+                    if RedoBudget == "Yes" or RedoBudget == "Y" or RedoBudget == "yes":
+                        print("\nOkay lets continue\n")
+                        AskBudget = False
+                        AskBudget2 = False
+                    elif RedoBudget == "No" or RedoBudget == "N" or RedoBudget == "no":
+                        print("\nPlease restate Your budget\n")
+                        Budget = float(input("What is your budget? : "))
+                    else:
+                        print("\nPlease state yes or no")
+        # Budget is not a number
+        except ValueError:
+            print("\nPleas use an appropriate amount\n")
+
+## Grocery List
+def GList ():
+    print("Grocery List")
+    print("-------------")
+    for i in Grocerylist:
+        print(str(i) + " <--\n")
+    print("-------------")
+
+## Add Groceries
+def AddGList():
+    global Food
+    global additem
+    global AllGood
+    while Food == True:
+        additem = input("\nWhat item are you going to put on your Grocery List? : ")
+        dblcheck = Grocerylist.count(additem)
+        if dblcheck > 0:
+            print("\nThis Item is already on your list")
+        else:
+            if additem.isalpha():
+                Food = False
+                AllGood = True
+                #Cart = Grocerylist.append(add)
+                Grocerylist.append(str(additem))
+                print("\n")
+            else:
+                print("\nPlease add a appropriate item")
+
+## Remove items
+def remove():
+    global takeout
+    asktoremove = input("\nWould you like to remove something from your cart?\n\nYes or No : ")
+    if asktoremove.lower() == "yes":
+        try:
+            while takeout == True:
+                GList()
+                removeitem = input("\nWhat would you like to remove? : ")
+                try:
+                    Grocerylist.remove(removeitem)
+                    print("\nYour removed " + str(removeitem) + " from your list")
+                    GList()
+                    takeout = False
+                    Tryagain()
+                except ValueError:
+                    print("\nPlease select an item from your list")
+        except ValueError:
+            print("\n_This shouldn't show up_")
+
+    elif asktoremove.lower() == "no":
+        print("\nYou did not remove anything")
+        Tryagain()
+    else:
+        print("Please reply with either Yes or No")
+        remove()
+
+## Weight List
+def WList ():
+    print("Weight List")
+    print("-------------")
+    for i in Weightlist:
+        print(str(i) + "lbs\n")
+    print("-------------")
+
+## Ask for items weight
+def ItemWeight ():
+    global AllGood
+    global weight
+    while AllGood == True:
+        try:
+            weight = input("\nWhat is " + str(additem) + "'s weight in lbs? : ")
+            Weightlist.append(int(weight))
+            AllGood = False
+            print("\n")
+        except TypeError:
+            print("\nPlease input a acceptable weight")
+        except ValueError:
+            print("\nPlease input a acceptable weight")
+
+## Price List
+def PList ():
+    print("Price List")
+    print("-------------")
+    for i in Pricelist:
+        print(str(i) + "$\n")
+    print("-------------")
+
+## Price Calculator
+def ItemPrice ():
+    global Cost
+    global additem
+    global weight
+    global Money
+    while Cost == True:
+        try:
+            price = (len(additem) * (int(weight)))
+            Pricelist.append(price)
+            Cost = False
+            print("Your Price has calculated to be " + str(price) + " dollars\n")
+        except ValueError:
+            print("\nItem Weight or Item Name are invalid")
+            AddGList()
+
+#Ask if user wants to try again
+def Tryagain():
+    again = input("\nAre you done shopping?\n\nYes or no? : ")
+    if again.lower() == "yes":
+        print("\nOkay goodbye")
+        exit()
+    elif again.lower() == "no":
+        Loop()
+    else:
+        print("\nThats not an option")
+
+#Reloop if player continues
+def Loop():
+    global Food
+    global Price
+    global Cost
+    global takeout
+    global AllGood
+    Food = True
+    Price = True
+    Cost = True
+    takeout = True
+    AllGood = False
+    AddGList()
+    GList()
+    ItemWeight()
+    WList()
+    ItemPrice()
+    PList()
+    remove()
+    Tryagain()
+
+
+#Run
+print("Welcome to FreshCo™\nWe hope you enjoy your visit and our overpricing :)")
+print('''
+  ,--./,-..
+ / #       l
+|          |
+ \        /
+  `._,._,' 
+      ^ created by HJW\n''')
+PocketChange()
+AddGList()
+GList()
+ItemWeight()
+WList()
+ItemPrice()
+PList()
+remove()
+Tryagain()
+
+
+
